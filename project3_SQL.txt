@@ -1,0 +1,34 @@
+/*query1: Top 10 genres with highest average track length?*/
+SELECT Genre.Name AS genre_name, avg(Track.Milliseconds) AS average_track_length
+FROM Track
+JOIN Genre ON Genre.GenreId = Track.GenreId
+GROUP BY Genre.Name
+ORDER BY average_track_length DESC 
+LIMIT 10;
+
+/*query2: Which 5 artists have the most albmus? */
+SELECT Artist.Name, count(Album.Title) AS album_count
+FROM Artist
+JOIN Album ON Album.ArtistId = Artist.ArtistId
+GROUP BY Artist.Name
+ORDER BY count(Album.Title) DESC
+LIMIT 5;
+
+/*Who were the top 3 countries with sales in Jazz*/
+SELECT Invoice.BillingCountry, count(Genre.Name) AS Jazz_Count
+FROM Track
+JOIN Genre ON Genre.GenreId = Track.GenreId
+JOIN InvoiceLine ON InvoiceLine.TrackId = Track.TrackId
+JOIN Invoice On Invoice.InvoiceId = InvoiceLine.InvoiceId
+GROUP BY Genre.Name, BillingCountry
+HAVING Genre.Name ='Jazz'
+ORDER BY count(Genre.Name)DESC
+LIMIT 3;
+
+/*query4: What are the top 10 genre types for tracks?*/
+SELECT Genre.Name, count(Genre.Name) AS track_count
+FROM Genre
+JOIN Track ON Track.GenreId = Genre.GenreId
+GROUP BY Genre.Name
+ORDER BY track_count DESC
+LIMIT 10;
